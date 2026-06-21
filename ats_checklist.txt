@@ -1,0 +1,16 @@
+ATS Project Test cases
+python + machine learning JD
+Expected: High Score
+Result: Pass
+java + html + flask JD
+Expected: Flask Missing 
+Result: Pass
+data analysis JD
+Expected: Data Analysis detected
+Result: Pass
+soft skills only JD
+Expected: 0% (current version)
+Result: Pass
+AI intern mixed JD
+Expected: High Score
+Result: Pass
