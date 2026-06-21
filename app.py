@@ -25,7 +25,6 @@ def extract_keywords(job_description):  # job description nundi keywords ni extr
     }
 
     for chunk in doc.noun_chunks:
-        #print(chunk.text)
         cleaned_words = []  
 
         for token in chunk: 
@@ -57,6 +56,8 @@ def extract_technical_skills(job_description):
                 found_skills.append(skill)
 
     return found_skills
+    print(job_description)
+    print(TECHNICAL_SKILLS)
 
 def extract_soft_skills(job_description):
     
@@ -111,7 +112,6 @@ def extract_section(text):
 
     for line in lines:
 
-        clean_line = " ".join(line.split()).lower()
         clean_line = line.strip().lower()
 
         for section, keywords in section_keywords.items():
@@ -130,16 +130,10 @@ def analyze_resume(filepath, job_description):
     text = extract_text(filepath)
 
     sections = extract_section(text)
-    technical_skills = extract_technical_skills(job_description)
-    soft_skills = extract_soft_skills(job_description)
 
     resume_text = text.lower()
 
-    keywords = extract_technical_skills(job_description)
-    print("keywords:", extract_keywords(job_description))
-    print("technical:", extract_technical_skills(job_description))
-    print("soft:", extract_soft_skills(job_description))
-    # print("Extracted Keywords:", keywords)
+    required_skills = extract_technical_skills(job_description)
     
     score = 0
     found_skills = []
@@ -154,18 +148,12 @@ def analyze_resume(filepath, job_description):
         if token.is_alpha:
             resume_words.add(token.lemma_.lower())
 
-    print("keywords:", keywords)
-    print("total keywords:", len(keywords))
-    for word in keywords:
+    for word in required_skills:
         keyword_parts = word.split()
         Matched = True
         for keyword_part in keyword_parts:
-        #print(word, word in resume_words)
          if keyword_part not in resume_words:
             Matched = False
-            #print(f"resume_words:", resume_words)
-            #print("checking:", word)
-            #print("parts:", keyword_parts)
 
         if Matched:
             score +=1
@@ -173,17 +161,12 @@ def analyze_resume(filepath, job_description):
         else:
             suggestions.append(f"Consider adding {word}")
                 
-    total_keywords = len(keywords)
+    total_keywords = len(required_skills)
 
     if total_keywords > 0:
         percentage = int((score / total_keywords) * 100)
     else:
         percentage = 0
-    
-    # print("Keywords:", keywords)
-    # print("Score:", score)
-    # print("Total Keywords:", total_keywords)
-    # print("Percentage:", percentage)
 
     return percentage, found_skills, suggestions
 
@@ -198,13 +181,6 @@ def home():
             file.save(filepath)
 
             percentage, skills, suggestions = analyze_resume(filepath, job_description)
-
-            print("Reached this point")
-            print("Percentage:", percentage)
-            #print("Skills:", skills)
-            #print("Suggestions:", suggestions)
-            #print(type(extract_keywords))
-            #print(type(analyze_resume))
 
             return render_template (
                 "result.html",
