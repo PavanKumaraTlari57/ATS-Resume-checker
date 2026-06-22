@@ -148,7 +148,7 @@ def analyze_resume(filepath, job_description):
             resume_words.add(token.text.lower())
 
     for word in required_technical_skills:
-        keyword_parts = word.split()
+        keyword_parts = word.split(
         matched = True
         for keyword_part in keyword_parts:
          if keyword_part not in resume_words:
