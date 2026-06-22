@@ -71,32 +71,62 @@
         </div>
     </div>
 
-    <!-- Detected Skills -->
-    <h4>🏷️ Detected Skills</h4>
+    <!-- Tools & Tech Found -->
+    <h4>🏷️ Tools & Tech Found </h4>
 
-    {% if skills %}
+    {% if found_technical_skills %}
         <div class="mb-4">
-            {% for skill in skills %}
+            {% for tech_skill in found_technical_skills %}
                 <span class="badge bg-info text-dark badge-skill">
-                    {{ skill }}
+                    {{ tech_skill }}
                 </span>
             {% endfor %}
         </div>
     {% else %}
-        <p>No matching skills found.</p>
+        <p>No Technical skills Matched.</p>
     {% endif %}
 
-    <!-- Suggestions -->
-    <h4>💡 Suggestions</h4>
+    <!-- Professional Traits Found -->
+    <h4>🏷️ Professional Traits Found </h4>
 
-    {% if suggestions %}
-        <ul class="list-group mb-4">
-            {% for suggestion in suggestions %}
-                <li class="list-group-item">
-                    {{ suggestion }}
-                </li>
+    {% if found_soft_skills %}
+        <div class="mb-4">
+            {% for soft_skill in found_soft_skills %}
+                <span class="badge bg-info text-dark badge-skill">
+                    {{ soft_skill }}
+                </span>
             {% endfor %}
-        </ul>
+        </div>
+    {% else %}
+        <p>No Soft skills Matched.</p>
+    {% endif %}
+
+    <!-- Missing Technical skills  -->
+    <h4>🏷️ Missing Technical skills </h4>
+
+    {% if missing_technical_skills %}
+        <div class="mb-4">
+            {% for tech_skill in missing_technical_skills %}
+                <span class="badge bg-info text-dark badge-skill">
+                    {{ tech_skill }}
+                </span>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Great! No Technical skills are Missing.</p>
+    {% endif %}
+
+    <!-- Missing Soft skills -->
+    <h4>💡 Missing Soft skills </h4>
+
+    {% if missing_soft_skills %}
+        <div class="mb-4">
+            {% for soft_skill in missing_soft_skills %}
+                <span class="badge bg-info text-dark badge-skill">
+                    {{ soft_skill }}
+                </span>
+            {% endfor %}
+        </div>
     {% else %}
         <div class="alert alert-success">
             Excellent! Your resume matches all important keywords.

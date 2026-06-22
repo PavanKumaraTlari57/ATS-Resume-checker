@@ -130,11 +130,14 @@ def analyze_resume(filepath, job_description):
 
     resume_text = text.lower()
 
-    required_skills = extract_technical_skills(job_description)
+    required_technical_skills = extract_technical_skills(job_description)
+    required_soft_skills = extract_soft_skills(job_description) 
     
     score = 0
-    found_skills = []
-    suggestions = []
+    found_technical_skills = []
+    found_soft_skills = []
+    missing_technical_skills = []
+    missing_soft_skills = []
 
     resume_doc = nlp(resume_text)
     resume_words = set()
@@ -144,27 +147,43 @@ def analyze_resume(filepath, job_description):
             resume_words.add(token.lemma_.lower())
             resume_words.add(token.text.lower())
 
-    for word in required_skills:
+    for word in required_technical_skills:
         keyword_parts = word.split()
-        Matched = True
+        matched = True
         for keyword_part in keyword_parts:
          if keyword_part not in resume_words:
-            Matched = False
+            matched = False
 
-        if Matched:
-            score +=1
-            found_skills.append(word)
+        if matched:
+            score +=2
+            found_technical_skills.append(word)
         else:
-            suggestions.append(f"Consider adding {word}")
-                
-    total_keywords = len(required_skills)
+            missing_technical_skills.append(f"Consider adding {word}")
 
-    if total_keywords > 0:
-        percentage = int((score / total_keywords) * 100)
+    for word in required_soft_skills:
+        keyword_parts = word.split()
+        matched = True
+        for keyword_part in keyword_parts:
+         if keyword_part not in resume_words:
+            matched = False
+
+        if matched:
+            score +=1
+            found_soft_skills.append(word)
+        else:
+            missing_soft_skills.append(f"Consider adding {word}")
+                
+    technical_count = len(required_technical_skills)
+    soft_count = len(required_soft_skills)
+
+    maximum_score = (technical_count * 2 + soft_count * 1)
+
+    if maximum_score > 0 :
+        percentage = int((score / maximum_score) * 100)
     else:
         percentage = 0
 
-    return percentage, found_skills, suggestions
+    return percentage, found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -176,13 +195,15 @@ def home():
             filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
             file.save(filepath)
 
-            percentage, skills, suggestions = analyze_resume(filepath, job_description)
+            percentage,  found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills = analyze_resume(filepath, job_description)
 
             return render_template (
                 "result.html",
                 percentage=percentage,
-                skills=skills,
-                suggestions=suggestions
+                found_technical_skills = found_technical_skills,
+                found_soft_skills = found_soft_skills,
+                missing_technical_skills = missing_technical_skills,
+                missing_soft_skills =missing_soft_skills
             )
     
     return render_template("index.html")
