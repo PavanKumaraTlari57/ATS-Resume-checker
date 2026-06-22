@@ -56,11 +56,8 @@ def extract_technical_skills(job_description):
                 found_skills.append(skill)
 
     return found_skills
-    print(job_description)
-    print(TECHNICAL_SKILLS)
 
 def extract_soft_skills(job_description):
-    
     jd = job_description.lower()
 
     found_skills = []
@@ -140,13 +137,12 @@ def analyze_resume(filepath, job_description):
     suggestions = []
 
     resume_doc = nlp(resume_text)
-    
     resume_words = set()
-
 
     for token in resume_doc:
         if token.is_alpha:
             resume_words.add(token.lemma_.lower())
+            resume_words.add(token.text.lower())
 
     for word in required_skills:
         keyword_parts = word.split()

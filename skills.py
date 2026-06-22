@@ -29,7 +29,12 @@ TECHNICAL_SKILLS = [
     "scikit-learn",
     "tensorflow",
     "data analysis",
-    "data visualization"
+    "data visualization",
+    "kubernetes",
+    "angular"
+    "ai",
+    "natural language processing",
+    "cloud computing"
 ]
 
 SOFT_SKILLS = [
