@@ -34,7 +34,18 @@ TECHNICAL_SKILLS = [
     "angular"
     "ai",
     "natural language processing",
-    "cloud computing"
+    "cloud computing",
+    "kotlin",
+    "rest api",
+    "pytorch",
+    "excel",
+    "statistics",
+    "bootstrap",
+    "algorithms",
+    "object oriented programming",
+    "linux",
+    "microservices",
+    "data structure"
 ]
 
 SOFT_SKILLS = [
@@ -45,5 +56,6 @@ SOFT_SKILLS = [
     "critical thinking",
     "adaptability",
     "time management",
-    "collaboration"
+    "collaboration",
+    "presentation skill"
 ]

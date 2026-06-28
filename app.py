@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 UPLOAD_FOLDER = "uploads"   # upload chesey files store avvadani ki idi path
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER # upload chesina files ikkada store avuthayi 
-
+ 
 def extract_keywords(job_description):  # job description nundi keywords ni extract chesey function
     doc = nlp(job_description)  # spacy library ni use chesi jd ni process chesthundhi
     keywords = set()    # unique keywords ni store cheyadaniki set ni use chesthunam
@@ -127,6 +127,12 @@ def analyze_resume(filepath, job_description):
     text = extract_text(filepath)
 
     sections = extract_section(text)
+    section_status = {
+    "skills": bool(sections["skills"]),
+    "projects": bool(sections["projects"]),
+    "experience": bool(sections["experience"]),
+    "education": bool(sections["education"])
+    }
 
     resume_text = text.lower()
 
@@ -148,7 +154,7 @@ def analyze_resume(filepath, job_description):
             resume_words.add(token.text.lower())
 
     for word in required_technical_skills:
-        keyword_parts = word.split(
+        keyword_parts = word.split()
         matched = True
         for keyword_part in keyword_parts:
          if keyword_part not in resume_words:
@@ -183,7 +189,8 @@ def analyze_resume(filepath, job_description):
     else:
         percentage = 0
 
-    return percentage, found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills
+    print(section_status)
+    return percentage, found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills, section_status
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -195,7 +202,7 @@ def home():
             filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
             file.save(filepath)
 
-            percentage,  found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills = analyze_resume(filepath, job_description)
+            percentage,  found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills, section_status = analyze_resume(filepath, job_description)
 
             return render_template (
                 "result.html",
@@ -203,7 +210,8 @@ def home():
                 found_technical_skills = found_technical_skills,
                 found_soft_skills = found_soft_skills,
                 missing_technical_skills = missing_technical_skills,
-                missing_soft_skills =missing_soft_skills
+                missing_soft_skills =missing_soft_skills,
+                section_status = section_status
             )
     
     return render_template("index.html")

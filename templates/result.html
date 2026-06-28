@@ -10,21 +10,45 @@
     <style>
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-image:url("/static/background.jpg.jpeg");
+            background-repeat: no-repeat;
             padding: 40px 20px;
             font-family: Arial, sans-serif;
+            background-size:cover;
+            background-position: center;
+        }
+
+        body::before{
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: -1;
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 30px;
             padding: 40px;
-            max-width: 900px;
+            max-width: 850px;
             margin: auto;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 0 30px rgba(0, 150, 255, 0.2);
             color: white;
+            margin-top: 20px;
+            transform: translateY(15px);
+        }
+
+        .section-card{
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 15px;
+            margin-bottom: 17px;
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            margin-bottom: 15px;
         }
 
         .badge-skill {
@@ -59,79 +83,107 @@
     <h1 class="text-center mb-4">📊 Resume Analysis Result</h1>
 
     <!-- ATS Score -->
-    <h3 class="mb-3">ATS Match Score: {{ percentage }}%</h3>
+    <h3 class="mb-3">
+        <span id="score-text"> 0% </span>
+    </h3>
 
     <div class="progress mb-4">
         <div
+            id="score-bar"
             class="progress-bar bg-success"
             role="progressbar"
-            style="width: {{ percentage ~ '%' }}"
+            style="width: 0%"
         >
-            {{ percentage }}%
+            0%
         </div>
     </div>
 
-    <!-- Tools & Tech Found -->
-    <h4>🏷️ Tools & Tech Found </h4>
+    <div class="section-card">
+        <!-- Tools & Tech Found -->
+        <h4>🏷️ Tools & Tech Found </h4>
 
-    {% if found_technical_skills %}
-        <div class="mb-4">
-            {% for tech_skill in found_technical_skills %}
-                <span class="badge bg-info text-dark badge-skill">
-                    {{ tech_skill }}
-                </span>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p>No Technical skills Matched.</p>
-    {% endif %}
+        {% if found_technical_skills %}
+                {% for tech_skill in found_technical_skills %}
+                    <span class="badge bg-info text-dark badge-skill">
+                        {{ tech_skill }}
+                    </span>
+                {% endfor %}
+         {% else %}
+            <p>No Technical skills Matched.</p>
+        {% endif %}
+    </div>
 
-    <!-- Professional Traits Found -->
-    <h4>🏷️ Professional Traits Found </h4>
+    <div class="section-card">
+        <!-- Professional Traits Found -->
+        <h4>🏷️ Professional Traits Found </h4>
 
-    {% if found_soft_skills %}
-        <div class="mb-4">
-            {% for soft_skill in found_soft_skills %}
-                <span class="badge bg-info text-dark badge-skill">
-                    {{ soft_skill }}
-                </span>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p>No Soft skills Matched.</p>
-    {% endif %}
+        {% if found_soft_skills %}
+            <div class="mb-4">
+                {% for soft_skill in found_soft_skills %}
+                    <span class="badge bg-info text-dark badge-skill">
+                        {{ soft_skill }}
+                    </span>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No Soft skills Matched.</p>
+        {% endif %}
+    </div>
 
-    <!-- Missing Technical skills  -->
-    <h4>🏷️ Missing Technical skills </h4>
+    <div class="section-card">
+        <!-- Missing Technical skills  -->
+        <h4>🏷️ Missing Technical skills </h4>
 
-    {% if missing_technical_skills %}
-        <div class="mb-4">
-            {% for tech_skill in missing_technical_skills %}
-                <span class="badge bg-info text-dark badge-skill">
-                    {{ tech_skill }}
-                </span>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p>Great! No Technical skills are Missing.</p>
-    {% endif %}
+        {% if missing_technical_skills %}
+            <div class="mb-4">
+                {% for tech_skill in missing_technical_skills %}
+                    <span class="badge bg-info text-dark badge-skill">
+                        {{ tech_skill }}
+                    </span>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Great! No Technical skills are Missing.</p>
+        {% endif %}
+    </div>
 
-    <!-- Missing Soft skills -->
-    <h4>💡 Missing Soft skills </h4>
+    <div class="section-card">
+        <!-- Missing Soft skills -->
+        <h4>💡 Missing Soft skills </h4>
 
-    {% if missing_soft_skills %}
-        <div class="mb-4">
-            {% for soft_skill in missing_soft_skills %}
-                <span class="badge bg-info text-dark badge-skill">
-                    {{ soft_skill }}
-                </span>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="alert alert-success">
-            Excellent! Your resume matches all important keywords.
-        </div>
-    {% endif %}
+        {% if missing_soft_skills %}
+            <div class="mb-4">
+                {% for soft_skill in missing_soft_skills %}
+                    <span class="badge bg-info text-dark badge-skill">
+                        {{ soft_skill }}
+                    </span>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-success">
+                These are the missing Soft skills:
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="section-card">
+        <!-- Section status -->
+        <h4> Section Analysis </h4>
+
+        {% if section_status %}
+            <div class="mb-4">
+                {% for section in section_status %}
+                    <span class="badge bg-info text-dark badge-skill">
+                        {{ section }}
+                    </span>
+                {% endfor %}
+            </div>
+            {% else %}
+                <div class="alert alert-success">
+                    Sections are detected
+                </div>
+                {% endif %}
+    </div>
 
     <!-- Back Button -->
     <div class="text-center">
@@ -142,4 +194,33 @@
 </div>
 
 </body>
+
+<script>
+
+let finalScore = Number('{{ percentage }}');
+
+let currentScore = 0;
+
+let scoreText = document.getElementById("score-text");
+
+let scoreBar = document.getElementById("score-bar");
+
+let interval = setInterval(() => {
+
+    if (currentScore >= finalScore) {
+        clearInterval(interval);
+    } else {
+        currentScore++;
+
+        scoreText.innerText = currentScore + "%";
+
+        scoreBar.style.width = currentScore + "%";
+
+        scoreBar.innerText = currentScore + "%";
+    }
+
+}, 50);
+
+</script>
+
 </html>
