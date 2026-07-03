@@ -10,7 +10,7 @@
     <style>
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-image: url("/static/index.jpeg");
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,21 +18,32 @@
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 30px;
             padding: 40px;
             width: 100%;
             max-width: 700px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 0 30px rgba(0, 150, 255, 0.2);
             color: white;
+
         }
+
+        .section-card{
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 15px;
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
 
         .title {
             font-size: 2.5rem;
             font-weight: bold;
-            text-align: center;
             margin-bottom: 10px;
         }
 
@@ -47,19 +58,20 @@
         }
 
         .form-control {
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 15px;
+            padding: 15px;
         }
 
         .btn-custom {
             background: linear-gradient(90deg, #00c6ff, #0072ff);
-            border: none;
+            border: 2px dashed;
             border-radius: 12px;
             padding: 12px;
             font-size: 1.1rem;
             font-weight: bold;
             color: white;
             transition: 0.3s;
+            cursor: pointer;
         }
 
         .btn-custom:hover {
@@ -71,27 +83,41 @@
 <body>
 
 <div class="glass-card">
-    <div class="title">AI Resume Analyzer</div>
-    <div class="subtitle">
-        Upload your resume and compare it with any job description to get an ATS Match Score.
+    <div class="section-card">
+        <div class="title">
+                <h1 class="text-center mb-2">
+                    AI Resume Analyzer
+                </h1>
+        </div>
+    
+
+        <div class="subtitle">
+            Optimize Your Resume -- Maximize Your Opportunities. <br>
+            • ATS Score • Skill Match • AI Insights <br>
+        </div>
     </div>
 
     <form method="POST" enctype="multipart/form-data">
 
-        <div class="pavan">
-            <label class="form-label">📄 Upload Resume (PDF or DOCX)</label>
-            <input type="file" name="resume" class="form-control" required>
+        <div class="section-card">
+            <div class="mb-2 text-center">
+                <label class="form-label">📄 Upload Your Resume <br>
+                • PDF • DOCX • Max 5 MB</label>
+                <input type="file" name="resume" class="form-control" required>
+            </div>
         </div>
 
-        <div class="mb-4">
-            <label class="form-label">📝 Job Description</label>
-            <textarea
+        <div class="section-card">
+            <div class="mb-2 text-center">
+                <label class="form-label">📝 Job Description</label>
+                <textarea
                 name="job_description"
                 class="form-control"
                 rows="8"
                 placeholder="Paste the job description here..."
-                required
-            ></textarea>
+                required>
+                </textarea>
+            </div>
         </div>
 
         <div class="d-grid">
