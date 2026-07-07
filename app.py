@@ -128,10 +128,10 @@ def analyze_resume(filepath, job_description):
 
     sections = extract_section(text)
     section_status = {
-    "skills": bool(sections["skills"]),
-    "projects": bool(sections["projects"]),
-    "experience": bool(sections["experience"]),
-    "education": bool(sections["education"])
+    "skills": 100 if sections["skills"] else 0,
+    "projects": 100 if sections["projects"] else 0,
+    "experience": 100 if sections["experience"] else 0,
+    "education": 100 if sections["education"] else 0
     }
 
     resume_text = text.lower()
@@ -164,7 +164,7 @@ def analyze_resume(filepath, job_description):
             score +=2
             found_technical_skills.append(word)
         else:
-            missing_technical_skills.append(f"Consider adding {word}")
+            missing_technical_skills.append(word)
 
     for word in required_soft_skills:
         keyword_parts = word.split()
@@ -177,7 +177,7 @@ def analyze_resume(filepath, job_description):
             score +=1
             found_soft_skills.append(word)
         else:
-            missing_soft_skills.append(f"Consider adding {word}")
+            missing_soft_skills.append(word)
                 
     technical_count = len(required_technical_skills)
     soft_count = len(required_soft_skills)

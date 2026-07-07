@@ -171,9 +171,9 @@
 
         {% if section_status %}
             <div class="mb-4">
-                {% for section in section_status %}
+                {% for section, score in section_status.items() %}
                     <span class="badge bg-info text-dark badge-skill">
-                        {{ section }}
+                        {{ section }} : {{ score }}%
                     </span>
                 {% endfor %}
             </div>
