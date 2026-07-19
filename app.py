@@ -109,10 +109,10 @@ def extract_section(text):
 
     for line in lines:
 
-        clean_line = line.strip().lower()
+        clean_line = line.strip().lower().rstrip(":")
 
         for section, keywords in section_keywords.items():
-           if any(keyword in clean_line for keyword in keywords):
+           if clean_line in keywords:
                 current_section = section 
                 break
 
@@ -128,11 +128,65 @@ def analyze_resume(filepath, job_description):
 
     sections = extract_section(text)
     section_status = {
-    "skills": 100 if sections["skills"] else 0,
-    "projects": 100 if sections["projects"] else 0,
-    "experience": 100 if sections["experience"] else 0,
-    "education": 100 if sections["education"] else 0
+    "skills":  0,
+    "projects": 0,
+    "experience": 0,
+    "education": 0
     }
+
+    skills_text = sections["skills"].strip()
+    
+    if skills_text:
+        skills_list = skills_text.split(",")
+        skills_count = len(skills_list)
+    else:
+        skills_count = 0
+
+    if skills_count == 0:
+        section_status["skills"] = 0
+
+    elif skills_count <= 4:
+        section_status["skills"] = 40
+
+    elif skills_count <= 8:
+        section_status["skills"] = 70
+
+    else:
+        section_status["skills"] = 100
+
+    projects_present = sections["projects"].strip()
+
+    if projects_present :
+        section_status["projects"] = 100
+
+    else:
+        section_status["projects"] = 0
+
+    experience_present = sections["experience"].strip()
+
+    if experience_present :
+        section_status["experience"] = 100
+
+    else:
+        section_status["experience"] = 0
+    
+    print("Experience Section:")
+    print(repr(sections["experience"]))
+    education_present = sections["education"].strip()
+
+    if education_present :
+        section_status["education"] = 100
+
+    else:
+        section_status["education"] = 0
+
+    sections_total = (section_status["skills"] + section_status["projects"] + section_status["experience"] + section_status["education"])
+    
+    if sections_total > 0:
+        section_percentage = int(sections_total / 4)
+
+    else:
+        section_percentage = 0
 
     resume_text = text.lower()
 
@@ -189,8 +243,7 @@ def analyze_resume(filepath, job_description):
     else:
         percentage = 0
 
-    print(section_status)
-    return percentage, found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills, section_status
+    return percentage, found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills, section_status, section_percentage
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -202,7 +255,7 @@ def home():
             filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
             file.save(filepath)
 
-            percentage,  found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills, section_status = analyze_resume(filepath, job_description)
+            percentage,  found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills, section_status, section_percentage = analyze_resume(filepath, job_description)
 
             return render_template (
                 "result.html",
@@ -211,7 +264,8 @@ def home():
                 found_soft_skills = found_soft_skills,
                 missing_technical_skills = missing_technical_skills,
                 missing_soft_skills =missing_soft_skills,
-                section_status = section_status
+                section_status = section_status,
+                section_percentage = section_percentage
             )
     
     return render_template("index.html")

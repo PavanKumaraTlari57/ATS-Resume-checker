@@ -172,8 +172,16 @@
         {% if section_status %}
             <div class="mb-4">
                 {% for section, score in section_status.items() %}
-                    <span class="badge bg-info text-dark badge-skill">
-                        {{ section }} : {{ score }}%
+                    <span class="badge 
+                    {% if score == 100 %}
+                        bg-success
+                    {% elif score >= 40 %}
+                        bg-warning text-dark
+                    {% else %}
+                        bg-danger
+                    {% endif %}
+                    badge-skill">
+                        {{ section|title }} : {{ score }}%
                     </span>
                 {% endfor %}
             </div>
@@ -181,7 +189,10 @@
                 <div class="alert alert-success">
                     Sections are detected
                 </div>
-                {% endif %}
+            {% endif %}
+
+        <h4> Overall Section Quality </h4>
+        <h2> {{ section_percentage }}% </h2>
     </div>
 
     <!-- Back Button -->
