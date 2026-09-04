@@ -82,6 +82,7 @@
     <h1 class="text-center mb-4">📊 Resume Analysis Result</h1>
 
     <!-- ATS Score -->
+    <h4> Resume Compatibility Score </h4>
     <h3 class="mb-3">
         <span id="score-text"> 0% </span>
     </h3>
@@ -96,6 +97,7 @@
             0%
         </div>
     </div>
+    <h6> ℹ️ The Score is calculated using Resume-Job Description Match (80%) and Resume Structure Quality (20%) </h6>
 
     <div class="section-card">
         <!-- Tools & Tech Found -->
@@ -152,6 +154,7 @@
 
         {% if missing_soft_skills %}
             <div class="mb-4">
+                These are the missing Soft skills:
                 {% for soft_skill in missing_soft_skills %}
                     <span class="badge bg-info text-dark badge-skill">
                         {{ soft_skill }}
@@ -160,7 +163,7 @@
             </div>
         {% else %}
             <div class="alert alert-success">
-                These are the missing Soft skills:
+                Great! No Soft skills are Missing.
             </div>
         {% endif %}
     </div>
@@ -207,7 +210,7 @@
 
 <script>
 
-let finalScore = Number('{{ percentage }}');
+let finalScore = Number('{{ job_match_score }}');
 
 let currentScore = 0;
 

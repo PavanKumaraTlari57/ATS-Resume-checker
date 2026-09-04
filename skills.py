@@ -31,7 +31,7 @@ TECHNICAL_SKILLS = [
     "data analysis",
     "data visualization",
     "kubernetes",
-    "angular"
+    "angular",
     "ai",
     "natural language processing",
     "cloud computing",

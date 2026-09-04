@@ -9,12 +9,12 @@ nlp = spacy.load("en_core_web_sm")
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = "uploads"   # upload chesey files store avvadani ki idi path
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER # upload chesina files ikkada store avuthayi 
+UPLOAD_FOLDER = "uploads"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER 
  
-def extract_keywords(job_description):  # job description nundi keywords ni extract chesey function
-    doc = nlp(job_description)  # spacy library ni use chesi jd ni process chesthundhi
-    keywords = set()    # unique keywords ni store cheyadaniki set ni use chesthunam
+def extract_keywords(job_description):
+    doc = nlp(job_description)
+    keywords = set()
 
     generic_words = {
         "developer",
@@ -170,8 +170,8 @@ def analyze_resume(filepath, job_description):
     else:
         section_status["experience"] = 0
     
-    print("Experience Section:")
-    print(repr(sections["experience"]))
+    # print("Experience Section:")
+    # print(repr(sections["experience"]))
     education_present = sections["education"].strip()
 
     if education_present :
@@ -220,6 +220,9 @@ def analyze_resume(filepath, job_description):
         else:
             missing_technical_skills.append(word)
 
+        print(required_technical_skills)
+        print(found_technical_skills)
+
     for word in required_soft_skills:
         keyword_parts = word.split()
         matched = True
@@ -242,8 +245,10 @@ def analyze_resume(filepath, job_description):
         percentage = int((score / maximum_score) * 100)
     else:
         percentage = 0
+    
+    job_match_score = percentage * 0.8 + section_percentage * 0.2
 
-    return percentage, found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills, section_status, section_percentage
+    return job_match_score, found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills, section_status, section_percentage
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -255,11 +260,11 @@ def home():
             filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
             file.save(filepath)
 
-            percentage,  found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills, section_status, section_percentage = analyze_resume(filepath, job_description)
+            job_match_score, found_technical_skills, found_soft_skills, missing_technical_skills, missing_soft_skills, section_status, section_percentage = analyze_resume(filepath, job_description)
 
             return render_template (
                 "result.html",
-                percentage=percentage,
+                job_match_score=job_match_score,
                 found_technical_skills = found_technical_skills,
                 found_soft_skills = found_soft_skills,
                 missing_technical_skills = missing_technical_skills,
