@@ -1,6 +1,22 @@
+# Secrets: never upload these
+.env
+.env.*
+!.env.example
+
+# Python
 venv/
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-uploads/*.pdf
+
+# Uploaded resumes are private user data
+uploads/
+
+# Frontend (for later)
+node_modules/
+dist/
+
+# Editor and system files
+.vscode/
+.DS_Store
