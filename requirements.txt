@@ -1,7 +1,0 @@
-Flask
-spacy
-pdfplumber
-scikit-learn
-pandas
-numpy
-nltk
